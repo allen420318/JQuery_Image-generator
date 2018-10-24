@@ -1,1 +1,0 @@
-# JQuery_Image-generator
