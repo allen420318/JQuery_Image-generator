@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>elder figure</title>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <style type="text/css">
+            h1,h3 {
+                font-family:"微軟正黑體";
+            }
+            .selectpic label{
+                float:left;
+                margin-right:15px;
+            }
+            #Download {
+                font-family:"微軟正黑體";
+                font-weight:bold;
+                text-decoration:none;
+                color:blue;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div>
+        <h1>長輩圖產生器</h1>
+        <input type="text" id="text01" PlaceHolder="請輸入文字"/>
+        <input type="button" id="button01" value="輸出"/>
+        <input type="button" id="button02" onClick="location.reload()" value="清除" />
+        </div><br>
+        <div>
+        <canvas id="canvasLab" width="300" height="200"
+            style="border:1px solid #000000;"></canvas>
+        <canvas id="canvasSmall" width="300" height="200"
+            style="border:1px solid #000000;display:none"></canvas>
+        </div>
+        
+        <div>
+        <a id="Download" href="#" download="elder.png">下載圖檔</a>
+        </div>
+        
+        <br><hr>
+        <div class="selectpic">
+        <h3>請選擇圖片</h3>
+            <label><input type="radio" name="pic" value="1" checked /><br> <img id="img01" src="images/01.jpg" width="300" /></label>
+            <label><input type="radio" name="pic" value="2" /><br> <img id="img02" src="images/02.jpg" width="300" /></label>
+            <label><input type="radio" name="pic" value="3" /><br> <img id="img03"src="images/03.jpg" width="300" /></label>
+        </div>
+        
+        <div id="debug"></div>
+        
+        <script>
+            window.onload = init;
+
+        function init() {
+            
+            var ctx = canvasLab.getContext("2d");
+            var ctxSmall = canvasSmall.getContext("2d");
+            ctx.drawImage(img01,0,0);
+            ctxSmall.drawImage(canvasLab, 0, 0, 300, 200);
+            Download.href = canvasLab.toDataURL("image/png");
+            
+            $("input[type=radio]").on("change" , function() {
+            //var x = $("input[type='radio'] checkbox:checked").prop("value");
+			var x = $('[name="pic"]:checked').val();
+                // alert(x);
+                if(x==1){
+                    y = img01; //轉全域變數
+                    // alert(img01);
+                }
+                if(x==2){
+                    y = img02; //轉全域變數
+                    // alert(img02);
+                }
+                if(x==3){
+                    y = img03; //轉全域變數
+                    // alert(img03);
+                }
+                ctx.drawImage(y,0,0);
+                ctxSmall.drawImage(canvasLab, 0, 0, 300, 200);
+                Download.href = canvasLab.toDataURL("image/png");
+            })
+            
+            $("#button01").on("click" , function(){
+                var newText = $("#text01").prop("value");
+                
+            //  ctx.fillStyle = "rgba(0, 0, 0, 1)";
+            // 	ctx.fillRect(0, 0, canvasLab.width, canvasLab.height);
+                ctx.drawImage(img01,0,0);
+                
+                //將輸入欄位文字畫在指定圖中
+    			ctx.beginPath();    
+                ctx.font = "36px 微軟正黑體";
+                ctx.fillStyle = "red";
+                ctx.textBaseline = "top";
+                ctx.textAlign = "center";
+                ctx.fillText(newText, 150, 130);
+                ctxSmall.drawImage(canvasLab, 0, 0, 300, 200);
+                
+                //將圖轉成64進位文字資料結構提供下載
+                Download.href = canvasLab.toDataURL("image/png");
+                
+                //輸入欄位清空
+                $("#text01").val("");   
+                
+                if (y == img01 || y == img02 || y == img03) {
+                ctx.save();
+            //  ctx.fillStyle = "rgba(0, 0, 0, 1)";
+            // 	ctx.fillRect(0, 0, canvasLab.width, canvasLab.height);
+    			ctx.drawImage(y,0,0);
+    			ctx.restore();
+                }
+                
+                // if (!y) {
+                // ctx.save();
+            //  ctx.fillStyle = "rgba(0, 0, 0, 1)";
+            // 	ctx.fillRect(0, 0, canvasLab.width, canvasLab.height);
+                // ctx.drawImage(img01,0,0);
+                // ctx.restore();
+                // }
+                
+                //將輸入欄位文字畫在指定圖中
+    			ctx.beginPath();    
+                ctx.font = "36px 微軟正黑體";
+                ctx.fillStyle = "red";
+                ctx.textBaseline = "top";
+                ctx.textAlign = "center";
+                ctx.fillText(newText, 150, 130);
+                ctxSmall.drawImage(canvasLab, 0, 0, 300, 200);
+                
+                //將圖轉成64進位文字資料結構提供下載
+                Download.href = canvasLab.toDataURL("image/png");
+                
+                //輸入欄位清空
+                $("#text01").val("");   
+            })
+            
+            
+            }
+        </script>
+    </body>
+</html>
